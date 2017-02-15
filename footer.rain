@@ -1,0 +1,242 @@
+<footer id="footer">
+        
+        {% if theme.show_newsletter %}
+        <div class="newsletter-bar">
+          <div class="container">
+            <div class="align">
+              <div class="text">{{ 'Stay up to date with the latest news and developments' | t }}</div>
+              <div class="input">
+                <form id="formNewsletter" action="{{ 'account/newsletter' | url }}" method="post">
+                  <input type="hidden" name="key" value="{{ page.key }}" />
+                  <input class="{% if theme.round_corners %}round-corners{% endif %}" type="text" name="email" id="formNewsletterEmail" value="" placeholder="{{ 'E-mail address' | t }}"/>
+                  <a class="btn{% if theme.round_corners %} round-corners-right{% endif %}" href="#" onclick="$('#formNewsletter').submit(); return false;" title="{{ 'Subscribe' | t }}"><span>{{ 'Send' | t }}</span></a>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+       
+       <div class="main-footer">
+         <div class="container">
+           <div class="row">
+             
+              <div class="col-lg-3 col-md-3">
+                <div class="footer-title">{{ 'About us' | t }}</div>   
+                {% if theme.shop_description %}
+                  <p>{{ theme.shop_description | t | raw }}</p>
+                {% endif %}
+                <div class="socials">
+                  {% if theme.social_facebook %}<a href="{{ theme.social_facebook }}" class="social-icon" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a>{% endif %}
+                  {% if theme.social_twitter %}<a href="{{ theme.social_twitter }}" class="social-icon" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a>{% endif %}
+                  {% if theme.social_instagram %}<a href="{{ theme.social_instagram }}" class="social-icon" target="_blank" title="Instagram {{ shop.name }}"><i class="fa fa-instagram" aria-hidden="true"></i></a>{% endif %}
+                  {% if theme.social_pinterest %}<a href="{{ theme.social_pinterest }}" class="social-icon" target="_blank"><i class="fa fa-pinterest" aria-hidden="true"></i></a>{% endif %}
+                  {% if theme.social_google %}<a href="{{ theme.social_google }}" class="social-icon" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i></a>{% endif %}
+                  {% if theme.social_linkedin %}<a href="{{ theme.social_linkedin }}" class="social-icon" target="_blank"><i class="fa fa-linkedin" aria-hidden="true"></i></a>{% endif %}
+                  {% if theme.social_youtube %}<a href="{{ theme.social_youtube }}" class="social-icon" target="_blank"><i class="fa fa-youtube" aria-hidden="true"></i></a>{% endif %}
+                  {% if theme.social_rss %}<a href="{{ 'index.rss' | url }}" class="social-icon" target="_blank"><i class="fa fa-rss" aria-hidden="true"></i></a>{% endif %}
+                  {% if theme.social_flickr %}<a href="{{ theme.social_flickr }}" class="social-icon" target="_blank"><i class="fa fa-flickr" aria-hidden="true"></i></a>{% endif %}
+                  {% if theme.social_vimeo %}<a href="{{ theme.social_vimeo }}" class="social-icon" target="_blank"><i class="fa fa-vimeo" aria-hidden="true"></i></a>{% endif %}
+                  {% if theme.social_tumblr %}<a href="{{ theme.social_tumblr }}" class="social-icon" target="_blank"><i class="fa fa-tumblr" aria-hidden="true"></i></a>{% endif %}
+                </div>
+                
+               
+                
+              </div>
+              
+              <div class="col-lg-3 col-md-3">
+                <div class="mobile-slide">
+                  <div class="footer-title">{{ 'Customer service' | t }} <span class="more-cats"><span class="plus-min"></span></span></div>   
+                  <ul>
+                    {% for link in shop.links.service %}
+                      <li><a href="{{ link.url | url }}">{{ link.title }}</a></li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+              
+              <div class="col-lg-3 col-md-3">
+                <div class="mobile-slide">
+                  <div class="footer-title">{{ 'My account' | t }} <span class="more-cats"><span class="plus-min"></span></span></div>   
+                  <ul>
+                    {% if page.account %}
+                    <li><a href="{{ 'account' | url }}" title="{{ 'My account' | t }}">{{ 'My account' | t }}</a></li>
+                    {% else %}
+                    <li><a href="{{ 'account' | url }}" title="{{ 'Register' | t }}">{{ 'Register' | t }}</a></li>
+                    {% endif %}
+                    <li><a href="{{ 'account/orders' | url }}" title="{{ 'My orders' | t }}">{{ 'My orders' | t }}</a></li>
+                    <li><a href="{{ 'account/tickets' | url }}" title="{{ 'My tickets' | t }}">{{ 'My tickets' | t }}</a></li>
+                    <li><a href="{{ 'account/wishlist' | url }}" title="{{ 'My wishlist' | t }}">{{ 'My wishlist' | t }}</a></li>
+                    {% if page.account %}
+                    <li><a href="{{ 'account/logout' | url }}" title="{{ 'Logout' | t }}">{{ 'Logout' | t }}</a></li>
+                    {% endif %}
+                    <li><a href="{{ 'compare' | url }}">{{ 'Compare products' | t }}</a></li>
+                  </ul>
+                </div>  
+              </div>
+              
+              <div class="col-lg-3 col-md-3">
+                {% if theme.shop_name %}<div class="footer-title mobile-border-top">{{ theme.shop_name | t | raw }}</div>{% endif %}
+                <ul>
+                  {% if theme.contact_address %}
+                  <li>
+                    <span class="icon"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
+                    <span class="text">{{ theme.contact_address | t | raw }}</span>
+                  </li>
+                  {% endif %}
+                  {% if theme.contact_address_2 %}
+                  <li>
+                    <span class="icon"></span>
+                    <span class="text">{{ theme.contact_address_2 | t | raw }}</span>
+                  </li>
+                  {% endif %}
+                  {% if theme.contact_phone %}
+                  <li>
+                    <span class="icon"><i class="fa fa-phone" aria-hidden="true"></i></span>
+                    <span class="text"><a href="tel:{{ theme.contact_phone }}">{{ theme.contact_phone | t | raw }}</a></span>
+                  </li>
+                  {% endif %}
+                  {% if theme.contact_email %}
+                  <li>
+                    <span class="icon"><i class="fa fa-paper-plane" aria-hidden="true"></i></span>
+                    <span class="text"><a href="mailto:{{ theme.contact_email | t | raw }}">{{ theme.contact_email | t | raw }}</a></span>
+                  </li>
+                  {% endif %}
+                  {% if theme.extra_field_1 or theme.extra_field_2 %}
+                    <li><br></li>
+                    {% if theme.extra_field_1 %}
+                    <li>
+                      <span class="icon"></span>
+                      <span class="text">{{ theme.extra_field_1 | t | raw }}</span>
+                    </li>
+                    {% endif %}
+                    {% if theme.extra_field_2 %}
+                    <li>
+                      <span class="icon"></span>
+                      <span class="text">{{ theme.extra_field_2 | t | raw }}</span>
+                    </li>
+                    {% endif %}
+                  {% endif %}
+                </ul>
+              </div>
+             
+             <div class="clearfix"></div>
+             <div class="col-lg-3 col-md-3">
+              {% if (theme.kiyoh_widget or theme.feedback_company_widget) and (theme.review_widget_place == 'footer' or theme.review_widget_place == 'both') %}
+                <div class="footer-title">{{ 'Reviews' | t }}</div> 
+                {% if theme.kiyoh_widget %}
+                <iframe scrolling="no" src="https://www.kiyoh.nl/widget.php?company={{ theme.kiyoh_widget }}&border=0" width="100%" height="175" border="0" frameborder="0"></iframe>
+                {% endif %}
+               {% if theme.feedback_company_widget %}
+               <!-- TFC WIDGET #tfcwidgetcontainer receives the HTML for the widget. You can style and size this div to fit your website -->
+            <div id='tfcwidgetcontainer{{ theme.feedback_company_widget }}' class='fbcompany'></div>
+               {% endif %}
+                {% endif %}
+             </div>
+             {% if theme.feedback_company_widget %}
+                <script type="text/javascript" src="https://beoordelingen.feedbackcompany.nl/widget/{{ theme.feedback_company_widget }}.js" async="async"></script>
+             {% endif %}
+            
+             <div class="col-lg-3 col-md-3"></div>
+             
+             {% if theme.show_banner_footer %}
+             <div class="col-lg-3 col-lg-offset-3 col-md-4 col-md-offset-2 need-help">
+               <a href="{{ theme.banner_footer_url | url }}">
+                 <img src="{{ 'banner-footer.png' | url_asset }}" class="img-responsive" alt="{{ shop.name }}">
+               </a>
+               {#
+               <div class="footer-help">
+                 <div class="image"><img src="{{ 'help-image.png' | url_asset }}" alt="{{ shop.name }}"></div>
+                 <div class="text">
+                   <div class="title">{{ 'Need help?' | t }}</div>
+                   <div class="content">{{ 'Contact our' | t }} <a href="{{ 'service' | url }}">{{ 'Customer service' | t | lower }}</a></div>
+                 </div>
+               </div>
+               #}
+             </div>
+             {% endif %}
+             
+             
+           </div>
+         </div>
+       </div>
+       
+       <div class="footer-bottom">
+         <a class="back-top" data-scroll="body" href="javascript:;"><i class="fa fa-angle-up" aria-hidden="true"></i></a>
+         <div class="container">
+           <div class="left">
+             © {{ 'Copyright' | t }} {{ 'now' | date('Y') }}
+                {% if shop.links.powered_by %}
+                - Powered by
+                {% for link in shop.links.powered_by %}
+                <a href="{{ link.url | url }}" title="{{ link.title }}"{% if link.new_window %} target="_blank"{% endif %}>{{ link.title }}</a>
+                {% if not loop.last %} - {% endif %}
+                {% endfor %}
+                {% endif %} - Theme by <a href="http://www.designmijnwebshop.nl/" target="_blank">DMWS.nl</a> |  <a href="{{ 'rss' | url }}">{{ 'RSS feed' | t }}</a>  |  <a href="{{ 'sitemap' | url }}">{{ 'Sitemap' | t }}</a>
+           </div>
+           <div class="right">
+             <ul class="payments">
+               {% for payment in shop.payments | keys %}
+               <li><img src="{{ (payment ~ '.png') | url_asset }}" alt="{{ payment }}"></li>
+               {% endfor %}
+             </ul>
+           </div>
+         </div>
+       </div>
+       
+      </footer>
+
+<!-- einde bodywrap --> </div> <!-- einde bodywrap -->
+
+  <script>
+    /* TRANSLATIONS */
+    var readmore = '{{ 'Read more' | t }}';
+    var readless = '{{ 'Read less' | t }}';
+    var searchUrl = '{{ 'search' | url }}';
+    var reviews = '{{ 'Reviews' | t }}';
+    var incTax = '{{ 'Incl. VAT' | t }}';
+    {% if shop.b2b %}
+     var shopb2b = true;
+    {% else %}
+    var shopb2b = false;
+    {% endif %}
+  </script>
+
+                <!--COUNTDOWN PRODUCTPAGE-->
+        {% set weekdays = {'0':'Sunday', '1': 'Monday', '2': 'Tuesday', '3': 'Wednesday', '4': 'Thursday', '5': 'Friday', '6': 'Saturday'} %}
+              <script>
+                var page = 'product';
+                var showDays = [
+              {% for weekday in weekdays %}
+              {% if attribute(theme, (weekday | lower)) %}
+              {{ loop.index0 }},
+              {% endif %}
+              {% endfor %}
+  ]
+                 var orderBefore = '{{ theme.order_before }}';  
+               var showFrom = '{{ theme.shown_from }}'; 
+              </script>
+                <!--END COUNTDOWN PRODUCTPAGE-->
+                <script>
+                  var basicUrl = '{{ '' | url }}';
+                  var shopId = '{{ shop.id }}';
+                  var moreInfo = '{{ 'More info' | t }}';
+                  var noVariants = '{{ 'No variants available' | t }}';
+                </script>
+                
+                {% if template != 'pages/product.rain' and theme.kiyoh_microdata %}
+                <google-microdata data-module-snippet="kiyoh_rich_snippet">
+                  <p itemscope="" class="hidden" itemtype="http://data-vocabulary.org/Review-aggregate">
+                    Beoordeling
+                    <span itemprop="itemreviewed">{{ theme.kiyoh_company_name }}</span>:
+                    <span itemprop="rating" itemscope="" itemtype="http://data-vocabulary.org/Rating">
+                      <span itemprop="average" class="average">{{ theme.kiyoh_current_rating }}</span> /
+                      <span class="totaltop">10</span>
+                      <meta itemprop="best" content="10" />
+                      <meta itemprop="worst" content="1" />
+                      </span>
+                   <span itemprop="votes" class="votes">{{ theme.kiyoh_amount_ratings }}</span> beoordelingen) op <a target="_blank" href="{{ theme.kiyoh_company_url }}">Kiyoh.nl</a>
+</span>
+                  </p>
+                </google-microdata>
+                {% endif %}
