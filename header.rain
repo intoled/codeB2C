@@ -350,7 +350,7 @@
             <li><a href="{{ category.url | url }}">{{ category.title }}</a></li>
             {% endfor %}
           </ul>
-          <ul class="payments">
+          <ul class="payments hidden-xs hidden-sm hidden-md">
             {% if theme.show_payments_in_menu %}
             {% for payment in shop.payments | keys %}
             <li class="payment"><img src="{{ (payment ~ '.png') | url_asset }}" alt="{{ payment }}"></li>
