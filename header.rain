@@ -1,0 +1,421 @@
+<div class="menu-wrap">
+    <div class="close-menu"><i class="ion ion-ios-close-empty"></i></div>
+    <div class="menu-box">
+      <div class="menu-logo {{ theme.logo_size }}"><a href="{{ '' | url }}"><img src="{{ 'logo-light.png' | url_asset }}" alt="{{ shop.name }}"></a></div>      
+        <ul>
+          <li><a href="{{ '' | url }}">Home</a></li>
+          {% for category in shop.categories %}
+            <li{% if category.url is active %} class="active"{% endif %}><a href="{{ category.url | url }}">{{ category.title }}</a>{% if category.subs %}<span class="more-cats"><span class="plus-min"></span></span>{% endif %}
+              {% if category.subs %}
+                <ul class="sub {% if category.url is active %}active{% endif %}">
+                  {% for category in category.subs %}
+                    <li{% if category.url is active %} class="active"{% endif %}><a href="{{ category.url | url }}">{{ category.title }}</a>{% if category.subs %}<span class="more-cats"><span class="plus-min"></span></span>{% endif %}
+                      {% if category.subs %}
+                        <ul class="sub {% if category.url is active %}active{% endif %}">
+                          {% for category in category.subs %}
+                            <li><a href="{{ category.url | url }}"><i class="fa fa-circle" aria-hidden="true"></i>{{ category.title }}</a></li>  
+                          {% endfor %}
+                        </ul>  
+                      {% endif %}
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </li>
+          {% endfor %}
+          
+                      {% if shop.blogs and theme.show_blog_in_menu %}
+                      <li class=""><a href="{{ 'blogs/blog' | url }}">{{ 'blog' | t }}</a></li>
+                      {% endif %}
+                      {% if theme.show_brands_in_menu and shop.brands %}
+                      <li class=""><a href="{{ 'brands' | url }}">{{ 'Brands' | t }}</a></li>
+                      {% endif %}
+                      {% if theme.show_contact_in_menu %}
+                      <li class=""><a href="{{ 'service' | url }}">{{ 'Contact' | t }}</a></li>
+                      {% endif %}
+                      
+          {% if shop.languages | length > 1 %}
+          <li><a href="javascript:;">{{ 'Language' | t }}: <strong>{{ shop.language2.code | upper }}</strong></a><span class="more-cats"><span class="plus-min"></span></span>
+            <ul>
+              {% for language in shop.languages %}
+                <li{% if language.code == shop.language2.code %} class="active"{% endif %}><a href="{{ language.url | url }}">{{ language.title }}</a></li>
+              {% endfor %}
+            </ul>
+          </li>  
+          {% endif %}
+          
+          {% if shop.currencies | length > 1 %}
+          <li><a href="javascript:;">{{ 'Currency' | t }}: <strong>{{ shop.currency2.symbol }}</strong></a><span class="more-cats"><span class="plus-min"></span></span>
+            <ul>
+              {% for currency in shop.currencies %}
+                <li{% if currency.title == shop.currency2.title %} class="active"{% endif %}><a href="{{ currency.url | url }}">{{ currency.title }} ({{ currency.symbol }})</a></li>
+              {% endfor %}
+            </ul>
+          </li>
+          {% endif %}
+          
+        </ul>
+      
+    </div>
+  </div>
+  
+  <div class="body-wrap">
+    <header id="header">
+      
+     <div class="topbar {{ theme.topbar_text_color }}">
+       <div class="container">
+         <div class="info left">
+           <ul>
+             <li class="hidden-xs hidden-lg tabletmenu-btn"><a href="javascript:;" class="open-menu"><i class="fa fa-bars" aria-hidden="true"></i> Menu</a></li>
+             {% if theme.telefoon %}<li class="dark"><a href="tel:{{ theme.telefoon }}"><i class="fa fa-phone" aria-hidden="true"></i>{{ theme.telefoon }}</a></li>{% endif %}
+             {% if theme.usp_link %}<a href="{{ theme.usp_link }}">{% endif %}<li class="hidden-xs hidden-sm">{{ theme.usp | t }}</li>{% if theme.usp_link %}</a>{% endif %}
+           </ul>
+         </div>
+         <div class="service right">
+           <ul>
+             {% if theme.show_compare %}
+             <li class="hidden-xs hidden-sm"><a href="{{ 'compare' | url }}" title="{{ 'Compare' | t }}"><i class="fa fa-exchange" aria-hidden="true"></i></a></li>
+               {% endif %}
+             {% if shop.languages | length > 1 %}
+             <li class="dropdown hidden-xs hidden-sm">{{ shop.language2.code | upper }}<i class="fa fa-caret-down" aria-hidden="true"></i>
+               <ul>
+                 {% for language in shop.languages %}
+                   <li><a href="{{ language.url | url }}">{{ language.code | upper }}</a></li>
+                 {% endfor %}
+               </ul>
+             </li>
+             {% endif %}
+             {% if shop.currencies | length > 1 %}
+             <li class="dropdown hidden-xs hidden-sm">{{ shop.currency2.symbol }}<i class="fa fa-caret-down" aria-hidden="true"></i>
+               <ul>
+                 {% for currency in shop.currencies %}
+                   <li><a href="{{ currency.url | url }}">{{ currency.symbol | upper }}</a></li>
+                 {% endfor %}
+               </ul>
+             </li>
+             {% endif %}
+             
+             {% if page.account %}
+              <li class="dark hidden-xs hidden-sm hidden-md"><a href="{{ 'account' | url }}">{{ 'My account' | t }}</a></li>
+             {% else %}
+              <li class="hidden-xs hidden-md"><a href="{{ 'account' | url }}">{{ 'Login' | t }}</a></li>
+             {% endif %}
+             <li class="hidden-lg"><a href="{{ 'account' | url }}"><i class="fa fa-user" aria-hidden="true"></i></a></li>
+             <li class="dark {#cart-mobile#} hidden-md hidden-lg"><a href="javascript:;" class="open-cart"><i class="fa fa-shopping-cart"></i><span class="items hidden-md hidden-lg">{{ page.cart.products | length }}</span></a></li>
+           </ul>
+         </div>
+         <div class="clearfix"></div>
+       </div>
+     </div>
+      
+      <div class="main-header">
+        <div class="container">
+          <div class="main-header-inner">
+            <div class="align">
+              <div class="mobilemenu-btn hidden-sm hidden-md hidden-lg"><a class="open-menu" href="javascript:;"><i class="fa fa-bars" aria-hidden="true"></i></a></div>
+              <div class="logo {{ theme.logo_size }}"><a href="{{ '' | url }}"><img src="{{ 'logo.png' | url_asset }}" alt="{{ shop.name }}"></a></div>
+              <div class="mobilesearch-btn hidden-sm hidden-md hidden-lg"><a href="javascript:;" class="open-search"><i class="ion ion-ios-search-strong"></i></a></div>
+              <div class="search hidden-xs" id="search">
+                <form action="{{ 'search' | url }}" method="get" id="formSearch">
+                  <input class="{% if theme.round_corners %}round-corners{% endif %}" type="text" name="q" autocomplete="off"  value="{{ page.search }}" placeholder="{{ 'Search' | t }}..."/>
+                  <span onclick="$('#formSearch').submit();" title="{{ 'Search' | t }}" class="go-search"><i class="ion ion-ios-search-strong"></i></span>
+                  
+                  <div class="autocomplete{% if theme.round_corners %} round-corners{% endif %}">
+                    <div class="search-products products-livesearch"></div>
+                    <div class="more"><a href="#">{{ 'View all results' | t }} <span>(0)</span></a></div>
+                    <div class="notfound">{{ 'No products found' | t }}...</div>
+                  </div>
+                  
+                </form> 
+              </div>
+              {% set keurmerk = theme.keurmerk | split(',') %}
+              {% if theme.keurmerk != 'geen' %}
+              <div class="hallmark hidden-xs"><div class="hallmark-wrap {{ keurmerk.1 }}{% if theme.keurmerk == 'eigen-keurmerk' %}{{ theme.maat_eigen_keurmerk }}{% endif %}"><a href="{{ theme.keurmerk_url | url }}"><img src="{{ (keurmerk.0 ~ '.png') | url_asset }}" alt="{{ shop.name }}"></a></div></div>
+                {% endif %}
+              <div class="cart{% if theme.light_cart_text %} light{% endif %} hidden-xs hidden-sm">
+                <a href="javascript:;" class="open-cart">
+                  <span class="icon"><i class="fa fa-shopping-cart"></i></span>
+                  <span class="items">{{ page.cart.products | length }}</span>
+                  <span class="text">
+                    {% if theme.show_currencies %}
+                    {{ page.cart.total.price | money }}
+                    {% else %}
+                    {{ page.cart.total.price | money_without_currency }}
+                    {% endif %}
+                  </span>
+                  <span class="more"><i class="fa fa-caret-down" aria-hidden="true"></i></span>
+                </a> 
+              </div>
+              
+              
+              <div class="cart-dropdown{% if theme.round_corners %} round-corners-bottom{% endif %}">
+                <div class="cart-title">{{ 'Cart' | t }}<span class="items">{{ page.cart.products | length }} items</span></div>
+                
+                <div class="cart-body">
+                  <table class="cart-products">
+                    {% for product in page.cart.products %}
+                    <tr class="product">
+                      <td><img src="{{ product.image | url_image('150x150x2') }}" width="75" alt="{{ product.title }}"></td>
+                      <td>
+                        <div class="info">
+                          <a class="title" href="{{ product.url | url }}">{{ product.title }}</a>
+                          {% if product.variant %}<div class="variant">{{ product.variant }}</div>{% endif %}
+                          <div class="price-quantity">
+                            <div class="quantity"><strong>{{ 'Quantity' | t }}:</strong> {{ product.quantity }}</div>
+                            <div class="price">
+                              {% if theme.show_currencies %}
+                              {{ product.price | money }}
+                              {% else %}
+                              {{ product.price | money_without_currency }}
+                              {% endif %}
+                            </div>
+                            <div class="clearfix"></div>
+                          </div>
+                          
+                          {% if product.unit.price > 0 %}
+                          <div class="unit-price">{{ 'Unit price' | t }}: {{ product.unit.price | money }} / {{ product.unit.unit }}</div>
+                          {% endif %}
+                          
+                        </div>
+                      </td>
+                      <td><a class="delete" href="{{ ('cart/delete/' ~ product.qid ~ '/') | url }}"><i class="fa fa-times-circle" aria-hidden="true"></i></a></td>
+                    </tr>
+                    {% endfor %}
+                  </table>
+                </div>
+                
+                {% if page.cart %}
+                <table class="total">
+                  <tr>
+                    <td>{% if shop.b2b %}{{ 'Excl. VAT' | t }}{% else %}{{ 'Incl. VAT' | t }}{% endif %}</td>
+                    <td>{% if theme.show_currencies %}{{ page.cart.total.price | money }}{% else %}{{ page.cart.total.price | money_without_currency }}{% endif %}</td>
+                  </tr>
+                  {% if shop.b2b %}
+                  <tr>
+                    <td>{{ 'VAT' | t | upper }}</td>
+                    <td>{% if theme.show_currencies %}{{ (page.cart.total.price_incl - page.cart.total.price) | money }}{% else %}{{ (page.cart.total.price_incl - page.cart.total.price) | money_without_currency }}{% endif %}</td>
+                  </tr>
+                  {% endif %}
+                  <tr>
+                    <td><strong>{{ 'Total' | t }}</strong></td>
+                    <td class="totaltotal">{% if theme.show_currencies %}{{ page.cart.total.price_incl | money }}{% else %}{{ page.cart.total.price_incl | money_without_currency }}{% endif %}</td>
+                  </tr>
+                </table>
+                
+                {% if theme.free_shipping %}
+                {% if (theme.free_shipping - page.cart.total.price) > 0 %}
+                <div class="free-shipping">
+                  {{ 'Free shipping? Order for:' | t }} <strong>{{ (theme.free_shipping - page.cart.total.price) | money }}</strong>
+                </div>
+                {% else %}
+                <div class="free-shipping"><span class="green">{{ 'Free shipping!' | t }}</span></div>
+                {% endif %}
+                {% endif %}
+                
+                <a class="btn" href="{{ 'cart' | url }}"><i class="ion ion-ios-cart"></i>{{ 'Checkout' | t }}</a>
+                {% else %}
+                <div class="empty-cart">
+                  {{ 'No products found' | t }}
+                </div>
+                {% endif %}
+              </div>
+              
+             
+            
+            </div>
+          </div>
+        </div>
+        
+        <div class="mobile-search">
+          <form action="{{ 'search' | url }}" method="get" id="formSearchMobile">
+            <input type="text" name="q" autocomplete="off"  value="{{ page.search }}" placeholder="{{ 'Search' | t }}..."/>
+            {#<span onclick="$('#formSearchMobile').submit();" title="{{ 'Search' | t }}" class="go-search"><i class="ion ion-ios-search-strong"></i></span>#}
+          </form> 
+        </div>
+        
+      </div>
+     
+      {% if theme.menu_style == 'Horizontaal' %}
+      <div class="main-menu {{ theme.menu_text_color }} hidden-xs hidden-sm hidden-md">
+        <div class="container">
+          <ul>
+            <li><a href="{{ '' | url }}">Home</a></li>
+            {% for category in shop.categories %}
+            <li class="{% if theme.menu_dropdown == 'dropdown_menu' %}with-small-menu{% endif %}"><a href="{{ category.url | url }}">{{ category.title }}{% if category.subs %}<i class="fa fa-caret-down" aria-hidden="true"></i>{% endif %}</a>
+              {% if category.subs and theme.menu_dropdown == 'mega_menu' %}
+              <div class="subnav">
+                <div class="container">
+                  <div class="row">
+                    {% if theme.menu_product %}
+                    <div class="col-md-10">
+                      <div class="row">
+                        {% endif %}
+                    {% for category in category.subs %}
+                    <div class="{% if theme.menu_product %}col-md-20{% else %}col-md-2{% endif %}">
+                      <a href="{{ category.url | url }}" class="sub-title">{{ category.title }}</a>
+                      {% if category.subs %}
+                      <ul class="subsub">
+                        {% for category in category.subs %}
+                        <li><a href="{{ category.url | url }}">{{ category.title }}</a></li>  
+                        {% endfor %} 
+                      </ul>  
+                      {% endif %}
+                    </div>
+                        {% if theme.menu_product %}
+                        {% if loop.index is divisibleby(5) %}
+                        <div class="clearfix"></div>
+                        <div class="col-xs-12"><hr></hr></div>
+                        {% endif %}
+                        {% else %}
+                        {% if loop.index is divisibleby(6) %}
+                        <div class="clearfix"></div>
+                        <div class="col-xs-12"><hr></hr></div>
+                        {% endif %}
+                        {% endif %}
+                        
+                    {% endfor %}
+                      
+                      {% if theme.menu_product %}
+                    </div>
+                  </div>
+                    <div class="col-md-2">
+                      <div class="featured-title">{{ 'Featured product ' | t }}</div>
+                      <div class="menu-product" data-url="{{ theme.menu_product | url }}">
+                        
+                      </div>
+                    </div>
+                  {% endif %}   
+                  
+                  </div>
+                </div>
+              </div>
+              {% elseif category.subs and theme.menu_dropdown == 'dropdown_menu' %}
+              
+              <ul class="small-dropdown">
+                {% for category in category.subs %}
+                <li><a href="{{ category.url | url }}">{{ category.title }}</a>
+                  {% if category.subs %}
+                  <ul>
+                    {% for category in category.subs %}
+                    <li><a href="{{ category.url | url }}">{{ category.title }}</a></li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+                </li>
+                {% endfor %}
+              </ul>
+              
+              {% endif %}
+            </li>
+            {% endfor %}
+            
+          
+            
+            {% if shop.blogs and theme.show_blog_in_menu %}
+            {% for blog in shop.blogs %}
+            <li class="with-small-menu"><a href="{{ blog.url | url }}">{{ blog.title }}<i class="fa fa-caret-down" aria-hidden="true"></i></a>
+              <ul class="small-dropdown">
+                {% for article in blog.articles %}
+                <li><a href="{{ article.url | url }}">{{ article.title }}</a></li>
+                {% endfor %}  
+              </ul>
+            </li>   
+            {% endfor %}  
+            {% endif %}
+            
+            {% if theme.show_brands_in_menu %}
+            <li class="with-small-menu"><a href="{{ 'brands' | url }}">{{ 'Brands' | t }}<i class="fa fa-caret-down" aria-hidden="true"></i></a>
+              <ul class="small-dropdown">
+                {% for brand in shop.brands %}
+                <li><a href="{{ brand.url | url }}">{{ brand.title }}</a></li>
+                {% endfor %}
+              </ul>
+            </li>   
+            {% endif %}
+            
+            {% if theme.show_contact_in_menu %}
+            <li class="with-small-menu"><a href="{{ 'service' | url }}">{{ 'Contact' | t }}</a></li>   
+            {% endif %}
+            
+          </ul>
+        </div>
+      </div>
+      {% else %}
+      {% if theme.show_extra_menu %}
+       <div class="main-menu hidden-xs hidden-sm">
+        <div class="container">
+          <ul class="extra-menu">
+            <li><a href="{{ '' | url }}">Home</a></li>
+            {% for category in shop.links.extra_menu %}
+            <li><a href="{{ category.url | url }}">{{ category.title }}</a></li>
+            {% endfor %}
+          </ul>
+          <ul class="payments">
+            {% if theme.show_payments_in_menu %}
+            {% for payment in shop.payments | keys %}
+            <li class="payment"><img src="{{ (payment ~ '.png') | url_asset }}" alt="{{ payment }}"></li>
+            {% endfor %}
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+      {% endif %}
+      {% endif %}
+     
+      {% if theme.show_usp %}
+      <div class="usp-block hidden-xs hidden-sm">
+        <div class="container">
+          <ul>
+            <li>
+              {% if theme.usp_1_url %}<a href="{{ theme.usp_1_url | url }}">{% endif %}
+              <i class="fa {{ theme.usp_1_icon }}" aria-hidden="true"></i>{{ theme.usp_1_tekst | t | raw }}
+              {% if theme.usp_1_url %}</a>{% endif %}
+            </li>
+            <li class="text-center hidden-xs hidden-sm">
+              {% if theme.usp_2_url %}<a href="{{ theme.usp_2_url | url }}">{% endif %}
+              <i class="fa {{ theme.usp_2_icon }}" aria-hidden="true"></i>{{ theme.usp_2_tekst | t | raw }}
+              {% if theme.usp_2_url %}</a>{% endif %}
+            </li>
+            <li class="text-right hidden-xs hidden-sm">
+              {% if theme.usp_3_url %}<a href="{{ theme.usp_3_url | url }}">{% endif %}
+              <i class="fa {{ theme.usp_3_icon }}" aria-hidden="true"></i>{{ theme.usp_3_tekst | t | raw }}
+              {% if theme.usp_3_url %}</a>{% endif %}
+            </li>
+            {% if theme.usp_4_tekst %}
+            <li class="text-right hidden-xs hidden-sm">
+              {% if theme.usp_4_url %}<a href="{{ theme.usp_4_url | url }}">{% endif %}
+              <i class="fa {{ theme.usp_4_icon }}" aria-hidden="true"></i>{{ theme.usp_4_tekst | t | raw }}
+              {% if theme.usp_4_url %}</a>{% endif %}
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+      
+
+      <div class="usp-slider owl-carousel owl-theme visible-xs visible-sm">
+        <div class="item">
+          {% if theme.usp_1_url %}<a href="{{ theme.usp_1_url | url }}">{% endif %}
+          <i class="fa {{ theme.usp_1_icon }}" aria-hidden="true"></i>{{ theme.usp_1_tekst | t | raw }}
+          {% if theme.usp_1_url %}</a>{% endif %}
+        </div>
+        <div class="item">
+          {% if theme.usp_2_url %}<a href="{{ theme.usp_2_url | url }}">{% endif %}
+          <i class="fa {{ theme.usp_2_icon }}" aria-hidden="true"></i>{{ theme.usp_2_tekst | t | raw }}
+          {% if theme.usp_2_url %}</a>{% endif %}
+        </div>
+        <div class="item">
+          {% if theme.usp_3_url %}<a href="{{ theme.usp_3_url | url }}">{% endif %}
+          <i class="fa {{ theme.usp_3_icon }}" aria-hidden="true"></i>{{ theme.usp_3_tekst | t | raw }}
+          {% if theme.usp_3_url %}</a>{% endif %}
+        </div>
+        <div class="item">
+          {% if theme.usp_4_url %}<a href="{{ theme.usp_3_url | url }}">{% endif %}
+          <i class="fa {{ theme.usp_4_icon }}" aria-hidden="true"></i>{{ theme.usp_4_tekst | t | raw }}
+          {% if theme.usp_4_url %}</a>{% endif %}
+        </div>
+      </div>
+      
+      {% endif %}
+     
+    </header>
