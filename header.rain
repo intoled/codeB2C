@@ -236,7 +236,7 @@
       </div>
      
       {% if theme.menu_style == 'Horizontaal' %}
-      <div class="main-menu {{ theme.menu_text_color }} hidden-xs hidden-sm hidden-md">
+      <div class="main-menu {{ theme.menu_text_color }} hidden-xs">
         <div class="container">
           <ul>
             <li><a href="{{ '' | url }}">Home</a></li>
@@ -342,7 +342,7 @@
       </div>
       {% else %}
       {% if theme.show_extra_menu %}
-       <div class="main-menu hidden-xs hidden-sm">
+       <div class="main-menu hidden-xs">
         <div class="container">
           <ul class="extra-menu">
             <li><a href="{{ '' | url }}">Home</a></li>
