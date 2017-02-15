@@ -44,7 +44,7 @@
                 
               </div>
               
-              <div class="col-lg-3 col-md-3">
+              <div class="col-lg-3 col-md-3 col-sm-4">
                 <div class="mobile-slide">
                   <div class="footer-title">{{ 'Customer service' | t }} <span class="more-cats"><span class="plus-min"></span></span></div>   
                   <ul>
@@ -55,7 +55,7 @@
                 </div>
               </div>
               
-              <div class="col-lg-3 col-md-3">
+              <div class="col-lg-3 col-md-3 col-sm-4">
                 <div class="mobile-slide">
                   <div class="footer-title">{{ 'My account' | t }} <span class="more-cats"><span class="plus-min"></span></span></div>   
                   <ul>
@@ -75,7 +75,7 @@
                 </div>  
               </div>
               
-              <div class="col-lg-3 col-md-3">
+              <div class="col-lg-3 col-md-3 col-sm-4">
                 {% if theme.shop_name %}<div class="footer-title mobile-border-top">{{ theme.shop_name | t | raw }}</div>{% endif %}
                 <ul>
                   {% if theme.contact_address %}
