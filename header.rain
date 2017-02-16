@@ -98,6 +98,7 @@
              {% if page.account %}
               <li class="dark hidden-xs hidden-sm hidden-md"><a href="{{ 'account' | url }}">{{ 'My account' | t }}</a></li>
              {% else %}
+              <li class="hidden-xs hidden-md"><a href="{{ 'account/register' | url }}">{{ 'MakeAccount' | t }}</a></li>
               <li class="hidden-xs hidden-md"><a href="{{ 'account' | url }}">{{ 'Login' | t }}</a></li>
              {% endif %}
              <li class="hidden-lg"><a href="{{ 'account' | url }}"><i class="fa fa-user" aria-hidden="true"></i></a></li>
