@@ -164,16 +164,20 @@
        <div class="footer-bottom">
          <a class="back-top" data-scroll="body" href="javascript:;"><i class="fa fa-angle-up" aria-hidden="true"></i></a>
          <div class="container">
-           <div class="left">
-             © {{ 'Copyright' | t }} {{ 'now' | date('Y') }}
+           <div class="left">               
+              © {{ 'Copyright INTOLED' | t }} {{ 'now' | date('Y') }}
+              {% if Zet_die_stomme_copyright_uit %}
                 {% if shop.links.powered_by %}
-                - Powered by
-                {% for link in shop.links.powered_by %}
-                <a href="{{ link.url | url }}" title="{{ link.title }}"{% if link.new_window %} target="_blank"{% endif %}>{{ link.title }}</a>
-                {% if not loop.last %} - {% endif %}
-                {% endfor %}
-                {% endif %} - Theme by <a href="http://www.designmijnwebshop.nl/" target="_blank">DMWS.nl</a> |  <a href="{{ 'rss' | url }}">{{ 'RSS feed' | t }}</a>  |  <a href="{{ 'sitemap' | url }}">{{ 'Sitemap' | t }}</a>
-           </div>
+                  - Powered by
+                  {% for link in shop.links.powered_by %}
+                    <a href="{{ link.url | url }}" title="{{ link.title }}"{% if link.new_window %} target="_blank"{% endif %}>{{ link.title }}</a>
+                    {% if not loop.last %} - {% endif %}
+                  {% endfor %}
+                {% endif %} 
+                - Theme by <a href="http://www.designmijnwebshop.nl/" target="_blank">DMWS.nl</a>  
+              {% endif %}                
+                | <a href="{{ 'rss' | url }}">{{ 'RSS feed' | t }}</a>  |  <a href="{{ 'sitemap' | url }}">{{ 'Sitemap' | t }}</a>
+            </div>
            <div class="right">
              <ul class="payments">
                {% for payment in shop.payments | keys %}
