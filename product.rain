@@ -47,7 +47,8 @@
             {% endif %}
             {% endif %}
             {% if theme.toon_voorraad %}
-            {% if not product.stock.delivery %}
+            {# removed a "not" in the statement below #}
+            {% if product.stock.delivery %}
             <div class="stock">{% if product.stock.available %}<div class="green"><i class="fa fa-check" aria-hidden="true"></i>{#{{ product.stock.level }} #}{{ 'In stock' | t | lower }}</div>{% else %}<div class="red"><i class="fa fa-times" aria-hidden="true"></i>{{ 'Out of stock' | t | lower }}</div>{% endif %}</div>
             {% endif %}
             {% endif %}
