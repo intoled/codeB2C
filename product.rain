@@ -1,0 +1,684 @@
+{% set productContent = product.content | split('//downloads//') %}
+
+<div class="page-top hidden-xs row">
+  <div class="col-sm-9 col-md-9 hidden-xs breadcrumbs">
+    <a href="{{ '' | url }}" title="{{ 'Home' | t }}">{{ 'Home' | t }}</a>
+    
+    {% for breadcrumb in page.breadcrumbs %}
+    <span class="bread-divider"><i class="fa fa-caret-right" aria-hidden="true"></i></span>
+    <a class="{% if loop.last %}last{% endif %}" href="{{ breadcrumb.url | url }}">{{ breadcrumb.title }}</a>
+    {% endfor %}
+  </div>  
+  
+  <div class="back-box col-sm-3 col-md-3">
+    <a class="back-to" href="{% if page.back %}{{ page.back.url | url }}{% else %}{{ '' | url }}{% endif %}"><span class="hidden-xs">{{ 'Terug naar overzicht' | t }}</span><span class="hidden-sm hidden-md hidden-lg">{{ 'Back' | t }}</span></a>
+  </div>
+  
+</div>
+
+<div class="row productpage">
+  
+  <div class="visible-lg col-lg-3 sidebar">
+    {% include 'snippets/sidebar.rain' %}
+  </div>
+  
+  <div class="col-lg-9">
+    <div class="row">
+      
+      <div class="col-sm-4 col-md-4 col-lg-5">
+        
+        <div class="mobile-product-title visible-xs">
+          <h1>{{ product.title }}</h1>
+          <div class="score-wrap hidden-sm hidden-md hidden-lg">
+            {% if theme.yotpo_id %}
+            <div class="yotpo bottomLine html_content" style="margin-top: 10px" data-appkey="{{ theme.yotpo_id }}" data-domain="{{ shop.domain }}" data-product-id="{{ product.id }}" data-product-models="{{ product.id }}" data-name="{{ product.title }}" data-url="{{ product.url | url }}" data-image-url="{{ product.image | url_image }}" data-description="{{ product.description }}" data-bread-crumbs="{{ breadcrumb.title }}"></div>
+            {% else %}
+            {% if theme.show_reviews_productpage %}
+            <div class="small-reviews">
+              <div class="stars" data-score="{{ product.score * 100 }}">
+                <img src="{{ 'stars.png' | url_asset }}" alt="{{ 'Reviews' | t }}">
+                <div class="score">
+                  <div class="pos"></div>
+                  <div class="neg"></div>
+                </div>
+              </div>
+              <a href="{{ ('account/review/' ~ product.id) | url }}">{{ product.reviews | length }} {{ 'Reviews' | t | lower }}</a>
+            </div>
+            {% endif %}
+            {% endif %}
+            {% if theme.toon_voorraad %}
+            {% if not product.stock.delivery %}
+            <div class="stock">{% if product.stock.available %}<div class="green"><i class="fa fa-check" aria-hidden="true"></i>{#{{ product.stock.level }} #}{{ 'In stock' | t | lower }}</div>{% else %}<div class="red"><i class="fa fa-times" aria-hidden="true"></i>{{ 'Out of stock' | t | lower }}</div>{% endif %}</div>
+            {% endif %}
+            {% endif %}
+            {% if product.stock.delivery %}<div class="delivery"><strong>{{ 'Delivery time' | t }}</strong><span class="green"> {% if product.stock.level < 1 %}<a href="/service/contact/" style="color:#76c61b;">{% endif %}{{ product.stock.delivery.title }}{% if product.stock.level < 1 %}</a>{% endif %}</span></div>{% endif %}
+            
+          </div>
+          
+        </div>
+        
+        <div class="product-image-wrap">
+          {% if product.brand.image and theme.show_brand_productpage %}<a href="{{ product.brand.url | url }}"><div class="brand"><img src="{{ product.brand.image | url_image('300x300x2', product.brand.title) }}" alt="{{ brand.title }}"></div></a>{% endif %}
+          {% if product.price.price_old %}<div class="productpagelabel sale">sale</div>{% endif %}
+          
+          <div id="sync1" class="owl-carousel">
+            {% for image in product.images %}
+            <div class="item">
+               {% if theme.enable_image_zoom %}<a rel="gallery" href="{{ image | url_image('', product.fulltitle) }}" class="product-fancy">{% endif %}<img src="{{ image | url_image('900x900x2', product.fulltitle) }}" alt="{{ product.title }}"> {% if theme.enable_image_zoom %}</a>{% endif %}
+              {% if theme.enable_image_zoom %}<div class="enlarge hidden-xs"><i class="fa fa-search-plus" aria-hidden="true"></i><a rel="gallery2" href="{{ image | url_image }}" class="product-fancy">{{ 'Afbeelding vergroten' | t }}</a></div>{% endif %}
+            </div>
+            {% endfor %}
+          </div>
+          
+          <div class="img-prev img-nav visible-xs">{% include 'snippets/play-icon.rain' %}</div>
+          <div class="img-next img-nav visible-xs">{% include 'snippets/play-icon.rain' %}</div>
+          
+        </div>
+        <div class="img-pages visible-xs">{{ 'Image' | t }} <span class="page">1</span> / {{ product.images | length }}</div>
+        
+        {% if product.images | length > 1 %}
+        <div class="thumbs hidden-xs hidden-sm">
+          <div class="thumb-prev thumb-nav">{% include 'snippets/play-icon.rain' %}</div>
+          <div id="sync2" class="owl-carousel">
+            {% for image in product.images %}
+            <div class="item"><img src="{{ image | url_image('200x200x2', product.fulltitle) }}" alt="{{ product.title }}"></div>
+            {% endfor %}
+          </div>
+          <div class="thumb-next thumb-nav">{% include 'snippets/play-icon.rain' %}</div>
+        </div>
+        {% endif %}
+        <div class="sm-thumbs row visible-sm">
+           {% for image in product.images %}
+          <div class="col-sm-4 thumb">
+            <a href="javascript:;" data-index="{{ loop.index0 }}">
+              <img src="{{ image | url_image('200x200x2', product.fulltitle) }}" width="100%" alt="{{ product.title }}">
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+        
+      </div>
+      
+      <div class="col-sm-8 col-md-8 col-lg-7">
+        <div class="product-info">
+          
+          <div class="title-wrap{% if theme.titel_all_caps %} caps{% endif %} hidden-xs">
+            {% if theme.show_fulltitle %}
+            <h1>{{ product.fulltitle }}</h1>
+            {% else %}
+            <h1>{{ product.title }}</h1>
+            {% endif %}
+            {#{% if product.brand.image %}<div class="brand"><img src="{{ product.brand.image | url_image('300x300x2') }}"></div>{% endif %}#}
+          </div>
+          
+          <div class="score-wrap hidden-xs">
+            {% if theme.yotpo_id %}
+            <div class="yotpo bottomLine html_content" style="margin-top: 10px" data-appkey="{{ theme.yotpo_id }}" data-domain="{{ shop.domain }}" data-product-id="{{ product.id }}" data-product-models="{{ product.id }}" data-name="{{ product.title }}" data-url="{{ product.url | url }}" data-image-url="{{ product.image | url_image }}" data-description="{{ product.description }}" data-bread-crumbs="{{ breadcrumb.title }}"> </div>
+            {% else %}
+            {% if theme.show_reviews_productpage %}
+            <div class="small-reviews">
+              <div class="stars" data-score="{{ product.score * 100 }}">
+                <img src="{{ 'stars.png' | url_asset }}" alt="{{ 'Reviews' | t }}">
+                <div class="score">
+                  <div class="pos"></div>
+                  <div class="neg"></div>
+                </div>
+              </div>
+              {% if not theme.yotpo_id %}<span class="review-q">{{ product.reviews | length }} {{ 'Reviews' | t | lower }}</span>{% endif %}
+            </div>
+            {% endif %}
+            {% endif %}
+            {% if theme.toon_voorraad %}
+            <div class="stock">{% if product.stock.available %}<div class="green"><i class="fa fa-check" aria-hidden="true"></i>{#{{ product.stock.level }} #}{{ 'In stock' | t | lower }}</div>{% else %}<div class="red"><i class="fa fa-times" aria-hidden="true"></i>{{ 'Out of stock' | t | lower }}</div>{% endif %}</div>
+            {% endif %}
+            
+            {% if product.stock.delivery %}<div class="delivery"><strong>{{ 'Delivery time' | t }}</strong><span class="green"> {% if product.stock.level < 1 %}<a href="/service/contact/" style="color:#76c61b;">{% endif %}{{ product.stock.delivery.title }}{% if product.stock.level < 1 %}</a>{% endif %}</span></div>{% endif %}
+          
+            
+          </div>
+          
+          <div class="description hidden-xs body-font-size">{{ product.description }}</div>
+          
+          <div class="code-price">
+            <div class="codes hidden-xs">
+              <ul>
+                {% if product.code and theme.show_article_number %}<li><strong>{{ 'Article code' | t }}</strong> {{ product.code }}</li>{% endif %}
+                {% if product.sku and theme.show_sku %}<li><strong>{{ 'SKU' | t }}</strong> {{ product.sku }}</li>{% endif %}
+              </ul>
+            </div>
+            <div class="price">
+              
+              {% if shop.settings.legal.mode == 'strict' %}
+              {% if product.unit.price %}
+              <div class="unit-price">{{ 'Unit price' | t }}: {{ product.unit.price | money }} / {{ product.unit.unit }}</div>
+              {% endif %}
+              {% endif %}
+              
+              {% if product.price.price_old %}
+              <span class="old-price">
+                {% if theme.show_currencies %}
+                {{ product.price.price_old | money }}
+                {% else %}
+                {{ product.price.price_old | money_without_currency }}
+                {% endif %}
+              </span>
+              {% if shop.settings.legal.mode == 'strict' %}
+              <small class="srp">{{ 'SRP' | t }}</small>
+              {% endif %}
+              {% endif %}
+              <span class="new-price">
+                {% if theme.show_currencies %}
+                {{ product.price.price | money }}{% if shop.settings.legal.mode == 'strict' %} <small>*</small>{% endif %}
+                {% else %}
+                {{ product.price.price | money_without_currency }}{% if shop.settings.legal.mode == 'strict' %} <small>*</small>{% endif %}
+                {% endif %}
+              </span>
+              {% if shop.b2b %}<a href="{{ 'service/shipping-returns' | url }}"><div class="inc-tax">({% if theme.show_currencies %}{{ product.price.price_incl | money }}{% else %}{{ product.price.price_incl | money_without_currency }}{% endif %} Incl. btw)</div></a>{% endif %}
+              
+            </div>
+          </div>
+          
+          <div class="cart">
+            <form action="{{ ('cart/add/' ~ product.vid) | url }}" id="product_configure_form" method="post">
+              {% if product.options or product.variants or product.custom %}
+              <div class="product-option{% if theme.round_corners %} round-corners{% endif %}">
+                {{ product | html_product_configure | raw }}
+              </div>
+              {% else %}
+              <input type="hidden" name="bundle_id" id="product_configure_bundle_id" value="">
+              {% endif %}
+              
+              {% if product.quantity > 1 %}
+              <div class="min-quantity">{{ 'Minimum order quantity' | t }}: <strong>{{ product.quantity }} {{ 'Pieces' | t | lower }}</strong></div>
+              {% endif %}
+              
+              {% if (product.discounts or product.discount_rules) and theme.discounts_position == 'top' %}
+              <div class="discounts top-discounts hidden-xs">  
+                <ul>
+                  {% if product.discounts %}
+                  {% for discount in product.discounts %}
+                  <li>
+                    {% if theme.show_currencies %}
+                    
+                    {{ ('Buy $1 for $2 each and save $3' | t (discount.quantity, discount.price | money, discount.percentage | percentage)) | raw }}
+                    {% if discount.unit and shop.settings.legal.mode == 'strict' %}
+                    ({{ discount.unit.price | money }} / {{ discount.unit.unit }})
+                    {% endif %}
+                    
+                    {% else %}
+                    
+                    {{ ('Buy $1 for $2 each and save $3' | t (discount.quantity, discount.price | money_without_currency, discount.percentage | percentage)) | raw }}
+                    {% if discount.unit and shop.settings.legal.mode == 'strict' %}
+                    ({{ discount.unit.price | money_without_currency }} / {{ discount.unit.unit }})
+                    {% endif %}
+                    
+                    {% endif %}
+                  </li>
+                  {% endfor %}
+                  {% endif %}
+                  
+                  {% if product.discount_rules %}
+                  {% for discount_rule in product.discount_rules %}
+                  <li>
+                    <strong>{{ discount_rule }}</strong>
+                  </li>
+                  {% endfor %}
+                  {% endif %}
+                </ul>
+              </div>
+              {% endif %}
+              
+              {% if product.stock.available %}
+              <div class="change">
+                <a href="javascript:;" data-way="down" {#onclick="updateQuantity('down');"#} class="down change-q{% if theme.round_corners %} round-corners-left{% endif %}">-</a>
+                <input id="product-q" type="text" name="quantity" value="{{ product.quantity }}" />
+                <a href="javascript:;" data-way="up" {#onclick="updateQuantity('up');"#} class="up change-q{% if theme.round_corners %} round-corners-right{% endif %}">+</a>
+              </div>
+              <a href="javascript:;" onclick="$('#product_configure_form').submit();" class="btn{% if theme.round_corners %} round-corners{% endif %}" title="{{ 'Add to cart' | t }}"><i class="ion ion-ios-cart"></i>{{ 'Add to cart' | t }}</a>
+              
+              <div class="order-before">
+                <span class="icon">
+                  <i class="fa fa-clock-o" aria-hidden="true"></i>
+                </span>
+                
+                <span class="text">{{ 'Ordered before [time], delivered tomorrow!' | t }} {{ 'You got' | t }} <span class="time">03:39</span><strong> {{ 'Hours' | t | lower }}</strong></span>
+              </div>
+              
+              {% endif %}
+              
+              
+              
+            </form>
+            
+            {% if theme.show_usp_productpage %}
+            <div class="product-usp">
+              <div class="row">
+                {#
+              <div class="col-xs-12 visible-xs">
+                <div class="usp-slider owl-carousel owl-theme">
+                  <div class="item">
+                    <i class="fa fa-check" aria-hidden="true"></i>{{ theme.product_usp_1 | t | raw }}
+                  </div>
+                  <div class="item">
+                    <i class="fa fa-check" aria-hidden="true"></i>{{ theme.product_usp_2 | t | raw }}
+                  </div>
+                </div>
+              </div>
+              #}
+              <div class="col-sm-6 hidden-xs">
+                <div class="usp">
+                  <span class="icon"><i class="fa fa-check" aria-hidden="true"></i></span>
+                  <span class="text">{{ theme.product_usp_1 | t | raw }}</strong></span>
+                </div>
+              </div>
+              <div class="col-sm-6 hidden-xs">
+                <div class="usp">
+                  <span class="icon"><i class="fa fa-check" aria-hidden="true"></i></span>
+                  <span class="text">{{ theme.product_usp_2 | t | raw }}</strong></span>
+                </div>
+              </div>
+              </div>
+            </div>
+            {% endif %}
+            
+            {% if theme.show_actions_productpage %}
+            <div class="clearfix"></div>
+            <div class="share-row hidden-xs">
+              <div class="row">
+                <div class="col-sm-4 link">
+                  <a href="{{ ('compare/add/' ~ product.vid ~ '/') | url }}"><i class="fa fa-exchange" aria-hidden="true"></i>{{ 'Compare products' | t }}</a>
+                </div>
+                <div class="col-sm-4 link text-center">
+                  <a href="{{ ('account/wishlistAdd/' ~ product.id ~ '/') | url }}"><i class="fa fa-heart" aria-hidden="true"></i>{{ 'Add to wishlist' | t }}</a>
+                </div>
+                <div class="col-sm-4 link text-right">
+                  <a href="{{ ('service?subject=' ~ product.title) | url }}"><i class="fa fa-phone" aria-hidden="true"></i>{{ 'Contact us' | t }}</a>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+            
+            {% if (product.discounts or product.discount_rules) and theme.discounts_position == 'bottom' %}
+            <div class="discounts hidden-xs">  
+              <ul>
+                {% if product.discounts %}
+                {% for discount in product.discounts %}
+                <li>
+                  {% if theme.show_currencies %}
+                  
+                  {{ ('Buy $1 for $2 each and save $3' | t (discount.quantity, discount.price | money, discount.percentage | percentage)) | raw }}
+                  {% if discount.unit and shop.settings.legal.mode == 'strict' %}
+                  ({{ discount.unit.price | money }} / {{ discount.unit.unit }})
+                  {% endif %}
+                  
+                  {% else %}
+                  
+                  {{ ('Buy $1 for $2 each and save $3' | t (discount.quantity, discount.price | money_without_currency, discount.percentage | percentage)) | raw }}
+                  {% if discount.unit and shop.settings.legal.mode == 'strict' %}
+                  ({{ discount.unit.price | money_without_currency }} / {{ discount.unit.unit }})
+                  {% endif %}
+                  
+                  {% endif %}
+                </li>
+                {% endfor %}
+                {% endif %}
+                
+                {% if product.discount_rules %}
+                {% for discount_rule in product.discount_rules %}
+                <li>
+                  <strong>{{ discount_rule }}</strong>
+                </li>
+                {% endfor %}
+                {% endif %}
+              </ul>
+            </div>
+             {% endif %}
+             
+             {% if theme.show_social_shares %}
+            <div class="fb-share-button" 
+    data-href="http://www.your-domain.com/your-page.html" 
+    data-layout="button_count">
+  </div>
+            <div class="share-links">
+            <div class="share-label">{{ 'Share this product' | t }}</div>
+              <ul>
+                <li><a onclick="return !window.open(this.href,'{{ product.title }}', 'width=500,height=500')" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ product.url | url }}"><i class="fa fa-facebook"></i></a></li>
+                <li><a onclick="return !window.open(this.href,'{{ product.title }}', 'width=500,height=500')" target="_blank" href="https://twitter.com/home?status={{ product.title }}"><i class="fa fa-twitter"></i></a></li>
+                <li><a onclick="return !window.open(this.href,'{{ product.title }}', 'width=500,height=500')" target="_blank" href="https://pinterest.com/pin/create/button/?url={{ product.url | url }}&media={{ product.image | url_image }}&description={{ product.description }}"><i class="fa fa-pinterest-p"></i></a></li>
+              </ul>
+            </div>
+          </div>
+          {% endif %}
+          {% if not theme.show_social_shares %}</div>{% endif %}
+        </div>
+      </div>
+      
+      <div class="sidebar col-xs-12 visible-xs">
+        <ul class="side-cats mobile-tabs body-font-size">
+          <li data-tab="1" class="active">
+            <a href="javascript:;">{{ 'Description' | t }}</a><span class="more-cats"><span class="plus-min"></span></span>
+            <div class="mobile-tab first body-font-size">
+              {{ productContent[0] | raw }}
+            </div>
+          </li>
+          
+          
+          {% if productContent[1] %}
+          <li data-tab="4">
+            <a href="javascript:;">{{ 'Downloads' | t }}</a><span class="more-cats"><span class="plus-min"></span></span>
+            <div class="mobile-tab body-font-size">
+              {{ productContent[1] | raw }}
+            </div>
+          </li>
+          {% endif %}
+          
+          
+          {% if product.specs %}
+          <li data-tab="2">
+            <a href="javascript:;" class="">{{ 'Specifications' | t }}</a><span class="more-cats"><span class="plus-min"></span></span>
+            <div class="mobile-tab specs body-font-size">
+              {% if product.specs %}
+              <table>
+                {% for spec in product.specs %}
+                <tr>
+                  <td class="spec-title"><strong>{{ spec.title }}:</strong></td>
+                  <td>{{ spec.value }}</td>
+                </tr>
+                {% endfor %}
+              </table>
+              {% endif %}
+            </div>
+          </li>
+          {% endif %}
+          <li data-tab="3">
+            {% if not theme.show_reviews_always and theme.show_reviews_productpage %}<a href="javascript:;" class="">{{ 'Reviews' | t }} {% if theme.yotpo_id %}
+                {% else %}<small>({{ product.reviews | length }})</small>{% endif %}</a><span class="more-cats"><span class="plus-min"></span></span>{% endif %}
+            
+            <div class="mobile-tab body-font-size">
+              <div class="reviews">
+                
+                {% if theme.yotpo_id %}
+                  <div class="yotpo yotpo-main-widget"
+                    data-product-id="{{ product.id }}"
+                    data-name="{{ product.title }}"
+                    data-url="{{ product.url | url }}"
+                    data-image-url="{{ product.image |url_image }}"
+                    data-description="{{ product.description }}">
+                  </div>
+                {% else %}
+                  {% for review in product.reviews %}
+                  <div class="review">
+                    <div class="stars" data-score="{{ review.score * 100 }}">
+                      <img src="{{ 'stars.png' | url_asset }}" alt="{{ 'Reviews' | t }}">
+                      <div class="score">
+                        <div class="pos"></div>
+                        <div class="neg"></div>
+                      </div>
+                    </div>
+                    <strong>{{ review.name }}</strong> <small>{{ review.date | date('d-m-Y H:i') }}</small>
+                    <p>{{ review.content }}</p>
+                  </div>
+                  {% endfor %}
+                  <div class="bottom">
+                    <div class="right">
+                      <a href="{{ ('account/review/' ~ product.id) | url }}">{{ 'Add your review' | t }}</a>
+                    </div>
+                    {{ '$1 stars based on $2 reviews' | t('<span>' ~ product.score * 5 | number_format(1, ',', '.') ~ '</span>', '<span>' ~ product.reviews | length ~ '</span>') | raw }}
+                    <div class="clearfix"></div>
+                  </div>  
+                {% endif %}
+                
+              </div>
+            </div>
+            
+          </li>
+        </ul>
+      </div>
+      
+      
+      <div class="col-xs-12 hidden-xs">
+        <div class="product-tabs tabs">
+          <ul class="tabs-list body-font-size">
+            <li data-tab="1"><a href="javascript:;" class="tab-link active">{{ 'Description' | t }}</a></li>
+            {% if product.specs %}<li data-tab="2"><a href="javascript:;" class="tab-link">{{ 'Specifications' | t }}</a></li>{% endif %}
+            {% if productContent[1] %}<li data-tab="4"><a href="javascript:;" class="tab-link">{{ 'Downloads' | t }}</a></li>{% endif %}
+            {% if not theme.show_reviews_always and theme.show_reviews_productpage %}<li data-tab="3"><a href="javascript:;" class="tab-link">{{ 'Reviews' | t }} {% if theme.yotpo_id %}
+                {% else %}<small>({{ product.reviews | length }})</small>{% endif %}</a></li>{% endif %}
+          </ul>
+      
+          <div class="tab tab-1 active body-font-size">
+            {{ productContent[0] | raw }}
+          </div>
+          
+          <div class="tab tab-4 body-font-size">
+            {{ productContent[1] | raw }}
+          </div>
+          
+          <div class="tab tab-2 specs body-font-size">
+            {% if product.specs %}
+            <table>
+              {% for spec in product.specs %}
+              <tr>
+                <td class="spec-title"><strong>{{ spec.title }}:</strong></td>
+                <td>{{ spec.value }}</td>
+              </tr>
+              {% endfor %}
+            </table>
+            {% endif %}
+          </div>
+          
+          <div class="tab tab-3 body-font-size">
+            
+            <div class="reviews desktop-reviews">
+              {% if theme.yotpo_id %}
+                <div class="yotpo yotpo-main-widget"
+                  data-product-id="{{ product.id }}"
+                  data-name="{{ product.title }}"
+                  data-url="{{ product.url | url }}"
+                  data-image-url="{{ product.image |url_image }}"
+                  data-description="{{ product.description }}">
+                </div>
+              {% else %}
+              <div class="reviews-body">
+                {% for review in product.reviews %}
+                <div class="review">
+                  <div class="stars" data-score="{{ review.score * 100 }}">
+                    <img src="{{ 'stars.png' | url_asset }}" alt="{{ 'Reviews' | t }}">
+                    <div class="score">
+                      <div class="pos"></div>
+                      <div class="neg"></div>
+                    </div>
+                  </div>
+                  <strong>{{ review.name }}</strong> <small>{{ review.date | date('d-m-Y H:i') }}</small>
+                  <p>{{ review.content }}</p>
+                </div>
+                {% endfor %}
+              </div>
+                
+              <div class="bottom">
+                <div class="right">
+                  <a href="{{ ('account/review/' ~ product.id) | url }}">{{ 'Add your review' | t }}</a>
+                </div>
+                {{ '$1 stars based on $2 reviews' | t('<span>' ~ product.score * 5 | number_format(1, ',', '.') ~ '</span>', '<span>' ~ product.reviews | length ~ '</span>') | raw }}
+              </div>   
+              {% endif %}
+            
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      
+       <div class="clearfix"></div>
+      
+      {% if theme.show_reviews_always and theme.show_reviews_productpage %}
+      <div class="col-xs-12">
+        <div class="reviews desktop-reviews">
+          
+          {% if theme.yotpo_id %}
+                <div class="yotpo yotpo-main-widget"
+                  data-product-id="{{ product.id }}"
+                  data-name="{{ product.title }}"
+                  data-url="{{ product.url | url }}"
+                  data-image-url="{{ product.image |url_image }}"
+                  data-description="{{ product.description }}">
+                </div>
+              {% else %}
+              
+          <div class="reviews-body">
+            {% for review in product.reviews %}
+            <div class="review">
+              <div class="stars" data-score="{{ review.score * 100 }}">
+                <img src="{{ 'stars.png' | url_asset }}"  alt="{{ 'Reviews' | t }}">
+                <div class="score">
+                  <div class="pos"></div>
+                  <div class="neg"></div>
+                </div>
+              </div>
+              <strong>{{ review.name }}</strong> <small>{{ review.date | date('d-m-Y H:i') }}</small>
+              <p>{{ review.content }}</p>
+            </div>
+            {% endfor %}
+          </div>
+          
+          <div class="bottom">
+            <div class="right">
+              <a href="{{ ('account/review/' ~ product.id) | url }}">{{ 'Add your review' | t }}</a>
+            </div>
+            {{ '$1 stars based on $2 reviews' | t('<span>' ~ product.score * 5 | number_format(1, ',', '.') ~ '</span>', '<span>' ~ product.reviews | length ~ '</span>') | raw }}
+          </div>   
+          {% endif %}
+          
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      {% endif %}
+        
+      <div class="clearfix"></div>
+        
+      {% if theme.show_actions_productpage %}
+      <div class="col-xs-12">
+        <div class="share-row visible-xs">
+          <div class="row">
+            <div class="col-xs-6 col-sm-4 link text-center">
+              <a href="{{ ('compare/add/' ~ product.vid ~ '/') | url }}"><i class="fa fa-exchange" aria-hidden="true"></i>{{ 'Compare products' | t }}</a>
+            </div>
+            <div class="col-xs-6 col-sm-4 hidden-xs link text-right">
+              <a href="{{ ('account/wishlistAdd/' ~ product.id ~ '/') | url }}"><i class="fa fa-heart" aria-hidden="true"></i>{{ 'Add to wishlist' | t }}</a>
+            </div>
+            <div class="col-sm-4 col-xs-6 link">
+              <a href="{{ ('service?subject=' ~ product.title) | url }}"><i class="fa fa-headphones" aria-hidden="true"></i>{{ 'Contact' | t }}</a>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+  
+      
+   
+    {% if product.related %}
+    <div class="related col-xs-12">
+      <div class="related-top">
+        <h1>{{ 'Related products' | t }}</h1>
+      </div>
+      <div class="products row">
+        {% for product in product.related | limit(4) %}
+          {% include 'snippets/products.rain' %}
+        {% endfor %} 
+      </div>
+    </div>
+    {% endif %}
+    
+    {% if product.bundles %}
+      <div class="col-xs-12">
+    <div class="bundle-title">
+      <h1>{{ 'Productbundel' | t }}</h1>
+    </div>
+    {% for bundle in product.bundles %}   
+    {% include 'snippets/bundleproduct.rain' %}
+    {% endfor %}
+      </div>
+    {% endif %} 
+    
+    {% if product.related | length > 4 %}
+    <div class="related col-xs-12">
+      <div class="related-top">
+        <h1>{{ 'Others also bought' | t }}</h1>
+      </div>
+      <div class="products row">
+        {% for product in product.related %}
+          {% if loop.index > 4 %}
+            {% include 'snippets/products.rain' %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    </div>
+    {% endif %}
+    
+    {% if product.tags | length > 0 %}
+    <div class="home-tags col-xs-12">
+      <h2 class="title-featured">{{ 'Tags' | t }}</h2>
+      <ul class="tags">
+        {% for tag in product.tags %}
+        <li class="tag"><a href="{{ tag.url | url }}">{{ tag.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+    
+    {% if shop.settings.legal.mode == 'strict' %}
+    <div class="{% if collection.products %}strict-shipping{% endif %} col-xs-12 text-right">
+      <small class="shipping-cost collection">
+        * 
+        {% if shop.b2b %}
+        {{ 'Excl. VAT' | t }}
+        {% else %}
+        {{ 'Incl. VAT' | t }}
+        {% endif %} 
+        {{ 'Excl. $1' | t('<a href="' ~ 'service/shipping-returns' | url ~ '" target="_blank">' ~ 'Shipping costs' | t ~ '</a>') | raw }}
+      </small>
+    </div>
+    {% endif %}
+    
+     </div>
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+  </div>  
+    
+      
+      
+  </div>
+</div>
+{#
+<script type="text/javascript">
+    function updateQuantity(way){
+      var quantity = parseInt($('#product-q').val());
+      if (way == 'up'){
+        if (quantity < {{ product.stock.maximum }}){
+          quantity++;
+            } else {
+            quantity = {{ product.stock.maximum }};
+        }
+      } else {
+        if (quantity > {{ product.stock.minimum }}){
+          quantity--;
+            } else {
+            quantity = {{ product.stock.minimum }};
+        }
+      }
+      
+      $('#product-q').val(quantity);
+    }
+</script>
+#}
