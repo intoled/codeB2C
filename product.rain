@@ -31,28 +31,61 @@
           <h1>{{ product.title }}</h1>
           <div class="score-wrap hidden-sm hidden-md hidden-lg">
             {% if theme.yotpo_id %}
-            <div class="yotpo bottomLine html_content" style="margin-top: 10px" data-appkey="{{ theme.yotpo_id }}" data-domain="{{ shop.domain }}" data-product-id="{{ product.id }}" data-product-models="{{ product.id }}" data-name="{{ product.title }}" data-url="{{ product.url | url }}" data-image-url="{{ product.image | url_image }}" data-description="{{ product.description }}" data-bread-crumbs="{{ breadcrumb.title }}"></div>
-            {% else %}
-            {% if theme.show_reviews_productpage %}
-            <div class="small-reviews">
-              <div class="stars" data-score="{{ product.score * 100 }}">
-                <img src="{{ 'stars.png' | url_asset }}" alt="{{ 'Reviews' | t }}">
-                <div class="score">
-                  <div class="pos"></div>
-                  <div class="neg"></div>
+              <div class="yotpo bottomLine html_content" style="margin-top: 10px" data-appkey="{{ theme.yotpo_id }}" data-domain="{{ shop.domain }}" data-product-id="{{ product.id }}" data-product-models="{{ product.id }}" data-name="{{ product.title }}" data-url="{{ product.url | url }}" data-image-url="{{ product.image | url_image }}" data-description="{{ product.description }}" data-bread-crumbs="{{ breadcrumb.title }}"></div>
+              {% else %}
+              {% if theme.show_reviews_productpage %}
+                <div class="small-reviews">
+                  <div class="stars" data-score="{{ product.score * 100 }}">
+                    <img src="{{ 'stars.png' | url_asset }}" alt="{{ 'Reviews' | t }}">
+                    <div class="score">
+                      <div class="pos"></div>
+                      <div class="neg"></div>
+                    </div>
+                  </div>
+                  <a href="{{ ('account/review/' ~ product.id) | url }}">{{ product.reviews | length }} {{ 'Reviews' | t | lower }}</a>
                 </div>
-              </div>
-              <a href="{{ ('account/review/' ~ product.id) | url }}">{{ product.reviews | length }} {{ 'Reviews' | t | lower }}</a>
-            </div>
+              {% endif %}
             {% endif %}
-            {% endif %}
+            
             {% if theme.toon_voorraad %}
-            {# removed a "not" in the statement below #}
+              {# removed a "not" in the statement below #}
+              {% if product.stock.delivery %}
+                <div class="stock hidden-xs">
+                  {% if product.stock.available %}
+                    <div class="green"><i class="fa fa-check" aria-hidden="true"></i>{#{{ product.stock.level }} #}{{ 'In stock' | t | lower }}</div>
+                  {% else %}
+                    <div class="red"><i class="fa fa-times" aria-hidden="true"></i>{{ 'Out of stock' | t | lower }}</div>
+                  {% endif %}
+                </div>
+              {% endif %}
+            {% endif %}
+            
             {% if product.stock.delivery %}
-            <div class="stock">{% if product.stock.available %}<div class="green"><i class="fa fa-check" aria-hidden="true"></i>{#{{ product.stock.level }} #}{{ 'In stock' | t | lower }}</div>{% else %}<div class="red"><i class="fa fa-times" aria-hidden="true"></i>{{ 'Out of stock' | t | lower }}</div>{% endif %}</div>
+              <div class="delivery"><strong>{{ 'Delivery time' | t }}</strong>
+                <span class="green"> 
+                  {% if product.stock.level < 1 %}
+                    <a href="/service/contact/" style="color:#76c61b;">
+                  {% endif %} {{ product.stock.delivery.title }}
+                  {% if product.stock.level < 1 %}
+                    </a>
+                  {% endif %}
+                </span>
+                
+                {% if theme.toon_voorraad %}
+                  {# removed a "not" in the statement below #}
+                  {% if product.stock.delivery %}
+                    <div class="stock hidden-sm-up" style="float:right; padding-left:10px;">
+                      {% if product.stock.available %}
+                        <div class="green"><i class="fa fa-check" aria-hidden="true"></i>{#{{ product.stock.level }} #}{{ 'In stock' | t | lower }}</div>
+                      {% else %}
+                        <div class="red"><i class="fa fa-times" aria-hidden="true"></i>{{ 'Out of stock' | t | lower }}</div>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                {% endif %}
+                
+              </div>
             {% endif %}
-            {% endif %}
-            {% if product.stock.delivery %}<div class="delivery"><strong>{{ 'Delivery time' | t }}</strong><span class="green"> {% if product.stock.level < 1 %}<a href="/service/contact/" style="color:#76c61b;">{% endif %}{{ product.stock.delivery.title }}{% if product.stock.level < 1 %}</a>{% endif %}</span></div>{% endif %}
             
           </div>
           
