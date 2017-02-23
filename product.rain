@@ -398,14 +398,22 @@
           
           
           {% if productContent[1] %}
-          <li data-tab="4">
-            <a href="javascript:;">{{ 'Downloads' | t }}</a><span class="more-cats"><span class="plus-min"></span></span>
-            <div class="mobile-tab body-font-size">
-              {{ productContent[1] | raw }}
-            </div>
-          </li>
+            <li data-tab="4">
+              <a href="javascript:;">{{ 'Downloads' | t }}</a><span class="more-cats"><span class="plus-min"></span></span>
+              <div class="mobile-tab body-font-size">
+                {{ productContent[1] | raw }}
+              </div>
+            </li>
           {% endif %}
-          
+		  
+		      {% if productContent[2] %}
+            <li data-tab="5">
+              <a href="javascript:;">{{ "Videos" | t }}</a><span class="more-cats"><span class="plus-min"></span></span>
+              <div class="mobile-tab body-font-size">
+                {{ productContent[2] | raw }}
+              </div>
+            </li>
+          {% endif %}
           
           {% if product.specs %}
           <li data-tab="2">
@@ -476,6 +484,7 @@
             <li data-tab="1"><a href="javascript:;" class="tab-link active">{{ 'Description' | t }}</a></li>
             {% if product.specs %}<li data-tab="2"><a href="javascript:;" class="tab-link">{{ 'Specifications' | t }}</a></li>{% endif %}
             {% if productContent[1] %}<li data-tab="4"><a href="javascript:;" class="tab-link">{{ 'Downloads' | t }}</a></li>{% endif %}
+            {% if productContent[2] %}<li data-tab="5"><a href="javascript:;" class="tab-link">{{ 'Videos' | t }}</a></li>{% endif %}
             {% if not theme.show_reviews_always and theme.show_reviews_productpage %}<li data-tab="3"><a href="javascript:;" class="tab-link">{{ 'Reviews' | t }} {% if theme.yotpo_id %}
                 {% else %}<small>({{ product.reviews | length }})</small>{% endif %}</a></li>{% endif %}
           </ul>
@@ -486,6 +495,10 @@
           
           <div class="tab tab-4 body-font-size">
             {{ productContent[1] | raw }}
+          </div>
+		  
+		   <div class="tab tab-5 body-font-size">
+            {{ productContent[2] | raw }}
           </div>
           
           <div class="tab tab-2 specs body-font-size">
