@@ -1,0 +1,354 @@
+{% if template != 'pages/index.rain' %}
+{% include 'snippets/quickview.rain' %}
+{% endif %}
+
+{% if template == 'pages/collection.rain' and collection.mode == 'list' %}
+
+
+<div class="col-xs-12 list-product-wrap product_{{ product.id }}" data-product-url="{{ product.url | url }}" data-cart-url="{{ 'cart/add/' | url }}">
+  <div class="list-product {% if loop.index is even %}even{% endif %}">
+    
+    <div class="image">
+      <a href="{{ product.url | url }}" title="{{ product.fulltitle }}" class="title">
+        {% if product.image %}
+        {% if theme.fill_image %}
+        <img src="{{ product.image | url_image('500x500x1', product.fulltitle) }}" width="100%" alt="{{ product.fulltitle }}" title="{{ product.fulltitle }}" />
+        {% else %}
+        <img src="{{ product.image | url_image('500x500x2', product.fulltitle) }}" width="100%" alt="{{ product.fulltitle }}" title="{{ product.fulltitle }}" />
+        {% endif %}
+        {% else %}
+        <img src="{{ 'productoverzicht-icon.png' | url_asset }}" width="100%" alt="{{ product.title }}" title="{{ product.title }}"/>
+        {% endif %}
+      {% if product.price.price_old %}
+      <div class="productlabel sale">
+        Sale
+      </div>
+      {% endif %}
+      </a>
+    </div>
+    
+
+      
+    <div class="info">
+      <a href="{{ product.url | url }}" title="{{ product.fulltitle }}" class="title">
+        {% if theme.show_fulltitle and product.fulltitle %} {{ product.fulltitle }} {% else %}
+        {{ product.title }} {% endif %}
+      </a>
+      <div class="description body-font-size">{{ product.description | limit(100) }}{% if product.description | length > 100 %}...{% endif %}</div>
+      
+      <div class="order visible-xs">
+        
+        {% if not page.account %}
+          <div class="price">
+            <a style="color: #ff9f00;" href="{{ 'account' | url }}">{{ 'PriceLogin' | t }}</a>
+          </div>
+        {% else %}
+        
+          <div class="price">      
+            {% if product.price.price_old %}
+            <span class="old-price">
+              {% if theme.show_currencies %}
+              {{ product.price.price_old | money }}
+              {% else %}
+              {{ product.price.price_old | money_without_currency }}
+              {% endif %}
+            </span>
+            {% if shop.settings.legal.mode == 'strict' %}
+            <small class="srp">{{ 'SRP' | t }}</small>
+            {% endif %}
+            {% endif %}
+            <span class="new-price">
+              {% if theme.show_currencies %}
+              {{ product.price.price | money }}{% if shop.settings.legal.mode == 'strict' %} <small>*</small>{% endif %}
+              {% else %}
+              {{ product.price.price | money_without_currency }}{% if shop.settings.legal.mode == 'strict' %} <small>*</small>{% endif %}
+              {% endif %}
+            </span>
+            {% if shop.b2b %}<a href="{{ 'service/shipping-returns' | url }}"><div class="inc-tax">({% if theme.show_currencies %}{{ product.price.price_incl | money }}{% else %}{{ product.price.price_incl | money_without_currency }}{% endif %} {{ 'Incl. VAT' | t }})</div></a>{% endif %}
+          </div>
+        {% endif %}
+        
+        <div class="cart">
+          <form action="{{ ('cart/add/' ~ product.vid) | url }}" data-action="{{ ('cart/add/' ~ product.vid) | url }}" id="product_configure_form_{{ product.id }}" method="post" class="firstform-mobile">
+            <div class="change">
+              <a href="javascript:;" class="down change-q" data-way="down">-</a>
+              <input type="text" name="quantity" value="{% if theme.one_button_to_add_all %}0{% else %}1{% endif %}" />
+              <a href="javascript:;" class="up change-q" data-way="up">+</a>
+            </div>
+            <a href="javascript:;" class="btn submit-form" title="{{ 'Add to cart' | t }}">
+              <span class="cart-icon"><i class="ion ion-ios-cart"></i></span>
+              <span class="plus-icon"><i class="fa fa-plus" aria-hidden="true"></i></span>
+            </a>
+          </form>
+        </div>
+      </div>
+      
+      {% if theme.show_variants_in_list_view_mode %}
+      <div class="variants-btn visible-xs"><a class="open-variants" href="javascript:;">{{ 'Variants' | t }}</a></div>
+      {% endif %}
+    </div>
+    
+      {#<div class="variants-btn hidden-xs"><a class="open-variants" href="javascript:;">{{ 'Variants' | t }}</a></div>#}
+      
+      <div class="order hidden-xs">
+    
+        {% if not page.account %}
+          <div class="price">
+            <a style="color: #ff9f00;" href="{{ 'account' | url }}">{{ 'PriceLogin' | t }}</a>
+          </div>
+        {% else %}
+        
+          <div class="price">      
+            {% if product.price.price_old %}
+            <span class="old-price">
+              {% if theme.show_currencies %}
+              {{ product.price.price_old | money }}
+              {% else %}
+              {{ product.price.price_old | money_without_currency }}
+              {% endif %}
+            </span>
+            {% if shop.settings.legal.mode == 'strict' %}
+            <small class="srp">{{ 'SRP' | t }}</small>
+            {% endif %}
+            {% endif %}
+            <span class="new-price">
+              {% if theme.show_currencies %}
+              {{ product.price.price | money }}{% if shop.settings.legal.mode == 'strict' %} <small>*</small>{% endif %}
+              {% else %}
+              {{ product.price.price | money_without_currency }}{% if shop.settings.legal.mode == 'strict' %} <small>*</small>{% endif %}
+              {% endif %}
+            </span>
+            {% if shop.b2b %}<a href="{{ 'service/shipping-returns' | url }}"><div class="inc-tax">({% if theme.show_currencies %}{{ product.price.price_incl | money }}{% else %}{{ product.price.price_incl | money_without_currency }}{% endif %} {{ 'Incl. VAT' | t }})</div></a>{% endif %}
+          </div>
+          
+        {% endif %}
+        
+        
+        <div class="cart">
+          {% if theme.show_variants_in_list_view_mode %}<a class="open-variants" href="javascript:;">{{ 'Variants' | t }}</a>{% endif %}
+          <form action="{{ ('cart/add/' ~ product.vid) | url }}" data-action="{{ ('cart/add/' ~ product.vid) | url }}" id="product_configure_form_{{ product.id }}" method="post" class="firstform-desktop">
+            <div class="change">
+              <a href="javascript:;" class="down change-q" data-way="down">-</a>
+              <input type="text" name="quantity" value="{% if theme.one_button_to_add_all %}0{% else %}1{% endif %}" />
+              <a href="javascript:;" class="up change-q" data-way="up">+</a>
+            </div>
+            <a href="javascript:;" class="btn submit-form" title="{{ 'Add to cart' | t }}">
+              <span class="cart-icon"><i class="ion ion-ios-cart"></i></span>
+              <span class="plus-icon"><i class="fa fa-plus" aria-hidden="true"></i></span>
+            </a>
+          </form>
+        </div>
+      </div>
+
+      
+  </div>
+  
+  <div class="variants" data-input-value="{% if theme.one_button_to_add_all %}0{% else %}1{% endif %}">
+    {#
+  <div class="variant"><span class="title">{{ product.variant }}</span><span class="price hidden-xs">{{ product.price.price_excl | money }} <span class="price-incl">({{ product.price.price_incl | money }} {{ 'Incl. VAT' | t }})</span></span><form action="{{ ('cart/add/' ~ product.vid) | url }}" method="post"><div class="change"><a href="javascript:;" class="down change-q" data-way="down">-</a><input type="text" name="quantity" value="1" /><a href="javascript:;" class="up change-q" data-way="up">+</a></div><a href="javascript:;" class="btn submit-form special"><span class="cart-icon"><i class="ion ion-ios-cart"></i></span><span class="plus-icon"><i class="fa fa-plus" aria-hidden="true"></i></span></a></form></div>
+    #}
+  </div>
+  
+</div>
+
+
+{% else %}
+{% if not theme.simplistic_products %}
+<div class="product {% if template == 'pages/index.rain' and theme.productslider %}slider-product{% elseif not theme.toon_sidebar and template == 'pages/index.rain' and theme.productweergave == 'small' %}col-xs-6 col-sm-4 col-md-20{% elseif theme.toon_sidebar and template == 'pages/index.rain' and theme.productweergave == 'big' %}col-xs-6 col-sm-4 col-md-4{% else %}col-xs-6 col-sm-4 {% if template != 'pages/product.rain' and template != 'pages/index.rain' and theme.productweergave == 'big' %}col-md-6 col-lg-4 {% elseif template != 'pages/product.rain' and template != 'pages/index.rain' and theme.productweergave == 'small' %}col-md-4 col-lg-3{% else %} col-md-3{% endif %}{% endif %} hidden-xs" data-url="{{ product.url | url }}?format=json">
+  <div class="product-inner{% if theme.round_corners %} round-corners{% endif %}">
+  
+  <div class="image-wrap{% if theme.round_corners %} round-corners-top{% endif %}">
+    
+    {% if product.id in (newest | keys) %}
+    <div class="productlabel new">
+        New
+      </div>
+    {% elseif product.price.price_old %}
+    <div class="productlabel sale">
+        Sale
+      </div>
+    {% endif %}
+
+    {% if theme.quickview %}
+    <div class="quickview-button">
+      <a href="#{{ producttype }}product-popup-{{ product.id }}" class="open-popup{% if theme.round_corners %} round-corners{% endif %}">{{ 'Quickview' | t }}</a>
+    </div>
+    {% endif %}
+    
+    <a href="{{ product.url | url }}" title="{{ product.fulltitle }}">
+      {% if product.image %}
+      {% if theme.fill_image %}
+      <img src="{{ product.image | url_image('500x350x1', product.fulltitle) }}" class="img-responsive" alt="{{ product.fulltitle }}" title="{{ product.fulltitle }}" />
+      {% else %}
+      <img src="{{ product.image | url_image('500x350x2', product.fulltitle) }}" class="img-responsive" alt="{{ product.fulltitle }}" title="{{ product.fulltitle }}" />
+      {% endif %}
+      {% else %}
+      <img src="{{ 'productoverzicht-icon.png' | url_asset }}" width="100%" alt="{{ product.title }}" title="{{ product.title }}"/>
+      {% endif %}
+    </a>
+  </div>
+  
+  <div class="info">
+    
+    <a href="{{ product.url | url }}" title="{{ product.fulltitle }}" class="title">
+  {% if theme.show_fulltitle and product.fulltitle %} {{ product.fulltitle }} {% else %}
+      {{ product.title }} {% endif %}
+    </a>
+    
+    <div class="description body-font-size hidden-xs">
+      {{ product.description | limit(60) }}{% if product.description | length > 60 %}...{% endif %}
+    </div>
+    
+    <div class="align">
+    <div class="actions hidden-sm hidden-xs">
+      {% if product.unit %}
+      <div class="unit-price">{{ 'Unit price' | t }}: {{ product.unit.price | money }} / {{ product.unit.unit }}</div>
+      {% endif %}
+      <ul>
+        <li><a href="{{ ('account/wishlistAdd/' ~ product.id ~ '/') | url }}"><i class="fa fa-heart" aria-hidden="true"></i></a></li>
+        <li><a href="{{ ('compare/add/' ~ product.vid ~ '/') | url }}"><i class="fa fa-exchange" aria-hidden="true"></i></a></li>
+        {% if theme.quickview %}<li><a href="#{{ producttype }}product-popup-{{ product.id }}" class="open-popup"><i class="fa fa-eye" aria-hidden="true"></i></a></li>{% endif %}
+      </ul>
+    </div>
+    
+    {% if not page.account %}
+      
+      <div class="price">
+        <a style="color: #ff9f00;" href="{{ 'account' | url }}">{{ 'PriceLogin' | t }}</a>
+      </div>
+   
+    {% else %}
+    
+      <div class="price">    
+        <span class="old-price">  
+          {% if product.price.price_old %}
+            {% if theme.show_currencies %}
+              {{ product.price.price_old | money }}
+            {% else %}
+              {{ product.price.price_old | money_without_currency }}
+            {% endif %}
+            {% if shop.settings.legal.mode == 'strict' %}
+              <small class="srp">{{ 'SRP' | t }}</small>
+            {% endif %}
+          {% endif %}  
+        </span>
+        <span class="new-price">
+          {% if theme.show_currencies %}
+            {{ product.price.price | money }}{% if shop.settings.legal.mode == 'strict' %} <small>*</small>{% endif %}
+          {% else %}
+            {{ product.price.price | money_without_currency }}{% if shop.settings.legal.mode == 'strict' %} <small>*</small>{% endif %}
+          {% endif %}
+        </span>
+        {% if shop.b2b %}<a href="{{ 'service/shipping-returns' | url }}"><div class="inc-tax">({% if theme.show_currencies %}{{ product.price.price_incl | money }}{% else %}{{ product.price.price_incl | money_without_currency }}{% endif %} {{ 'Incl. VAT' | t }})</div></a>{% endif %}
+      </div>
+    {% endif %}
+   
+   <div class="clearfix"></div>
+   </div>
+   
+   <div class="buttons">
+     <a href="{{ product.url | url }}" class="more-info{% if theme.round_corners %} round-corners{% endif %}">{{ 'More info' | t }}</a>
+     <a href="{{ ('cart/add/' ~ product.vid) | url }}" class="shop-now{% if theme.round_corners %} round-corners{% endif %}"><i class="ion ion-ios-cart"></i></a>
+   </div>
+    
+   
+  </div>
+     
+   </div>
+</div>
+
+{% include 'snippets/mobile-list-product.rain' %}
+
+        {#<!--
+        {% if loop.index is divisibleby(4) and template != 'pages/product.rain' %}
+        <div class="clearfix visible-lg"></div>
+        {% endif %}
+        {% if loop.index is divisibleby(3) and template != 'pages/product.rain' %}
+        <div class="clearfix visible-md visible-sm"></div>
+        {% endif %}
+        {% if loop.index is divisibleby(2) and not loop.index is divisibleby(4) and template == 'pages/product.rain' %}
+        <div class="clearfix visible-xs"></div>
+        {% endif %}
+        -->#}
+{% else %}
+
+<div class="product special-product {% if template == 'pages/index.rain' and theme.productslider %}slider-product{% elseif not theme.toon_sidebar and template == 'pages/index.rain' and theme.productweergave == 'small' %}col-xs-6 col-sm-4 col-md-20{% elseif theme.toon_sidebar and template == 'pages/index.rain' and theme.productweergave == 'big' %}col-xs-6 col-sm-4 col-md-4{% else %}col-xs-6 col-sm-4 {% if template != 'pages/product.rain' and template != 'pages/index.rain' and theme.productweergave == 'big' %}col-md-6 col-lg-4 {% elseif template != 'pages/product.rain' and template != 'pages/index.rain' and theme.productweergave == 'small' %}col-md-4 col-lg-3{% else %} col-md-3{% endif %}{% endif %}" data-url="{{ product.url | url }}?format=json">
+  <div class="product-inner">
+    
+    <div class="image-wrap">
+    {% if product.id in (newest | keys) %}
+    <div class="productlabel new">
+        New
+      </div>
+    {% elseif product.price.price_old %}
+    <div class="productlabel sale">
+        Sale
+      </div>
+    {% endif %}
+
+      {% if theme.quickview %}
+    <div class="quickview-button hidden-sm hidden-xs">
+      <a href="#{{ producttype }}product-popup-{{ product.id }}" class="open-popup{% if theme.round_corners %} round-corners{% endif %}">{{ 'Quickview' | t }}</a>
+    </div>
+    {% endif %}
+    
+    <a href="{{ product.url | url }}" title="{{ product.fulltitle }}">
+      {% if product.image %}
+      {% if theme.fill_image %}
+      <img src="{{ product.image | url_image('350x500x1', product.fulltitle) }}" width="100%" alt="{{ product.fulltitle }}" title="{{ product.fulltitle }}" />
+      {% else %}
+      <img src="{{ product.image | url_image('350x500x2', product.fulltitle) }}" width="100%" alt="{{ product.fulltitle }}" title="{{ product.fulltitle }}" />
+      {% endif %}
+      {% else %}
+      <img src="{{ 'productoverzicht-icon.png' | url_asset }}" width="100%" alt="{{ product.title }}" title="{{ product.title }}"/>
+      {% endif %}
+    </a>
+  </div>
+    
+    <div class="info">
+     <a href="{{ product.url | url }}" title="{{ product.fulltitle }}" class="title">
+  {% if theme.show_fulltitle and product.fulltitle %} {{ product.fulltitle }} {% else %}
+      {{ product.title }} {% endif %}
+    </a>
+      
+      {% if not page.account %}
+        <div class="price">
+          <a style="color: #ff9f00;" href="{{ 'account' | url }}">{{ 'PriceLogin' | t }}</a>
+        </div>
+      {% else %}
+      
+        <div class="price">    
+          <span class="old-price">  
+            {% if product.price.price_old %}
+              {% if theme.show_currencies %}
+                {{ product.price.price_old | money }}
+              {% else %}
+                {{ product.price.price_old | money_without_currency }}
+              {% endif %}
+              {% if shop.settings.legal.mode == 'strict' %}
+                <small class="srp">{{ 'SRP' | t }}</small>
+              {% endif %}
+            {% endif %}  
+          </span>
+          <span class="new-price">
+            {% if theme.show_currencies %}
+              {{ product.price.price | money }}{% if shop.settings.legal.mode == 'strict' %} <small>*</small>{% endif %}
+            {% else %}
+              {{ product.price.price | money_without_currency }}{% if shop.settings.legal.mode == 'strict' %} <small>*</small>{% endif %}
+            {% endif %}
+          </span>
+          {% if shop.b2b %}<a href="{{ 'service/shipping-returns' | url }}"><div class="inc-tax">({% if theme.show_currencies %}{{ product.price.price_incl | money }}{% else %}{{ product.price.price_incl | money_without_currency }}{% endif %} {{ 'Incl. VAT' | t }})</div></a>{% endif %}
+          
+          <div class="unit-price">{% if product.unit %}{{ 'Unit price' | t }}: {{ product.unit.price | money }} / {{ product.unit.unit }}{% endif %}</div>
+        
+        </div>
+      {% endif %}
+      
+    </div>
+    
+  </div>
+  </div>
+
+{% endif %}
+
+{% endif %}
